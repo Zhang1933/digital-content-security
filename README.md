@@ -1,6 +1,7 @@
 # 数字内容安全小学器实践
-## 环境安装：
+
 ### 进入所在目录
+用pipenv 管理环境 初始pipenv 换源已经弄好了
 ```python
 # 安装环境
 pipenv install
