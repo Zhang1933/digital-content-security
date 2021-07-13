@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "77af7308824286724e08bcaa0e562d1635ec147e42ae0596cb64e6b5e7126dcb"
+            "sha256": "87bbe8ed9f433262ee58e21872c8d6a8370ab11b20eeef5ff4c0d0b453ac803b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -45,6 +45,14 @@
             ],
             "index": "aliyun",
             "version": "==0.5.0"
+        },
+        "flask-paginate": {
+            "hashes": [
+                "sha256:31133c29c718aed95276425f7795d0a32b8d45a992ddd359c69600f22f869254",
+                "sha256:bc0ab54d4072a519e6157672ce953b6a1d7c9fac3cb4bce160048bba0a4ad89b"
+            ],
+            "index": "aliyun",
+            "version": "==0.8.1"
         },
         "flask-sqlalchemy": {
             "hashes": [

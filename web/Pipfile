@@ -9,6 +9,7 @@ PySocks = "*"
 Flask-Login = "*"
 pylint = "*"
 Flask-SQLAlchemy = "*"
+flask-paginate = "*"
 
 [dev-packages]
 

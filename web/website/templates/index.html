@@ -15,4 +15,12 @@
     </li>  
     {% endfor %}
 </ul>
+{% if paginate.has_prev %}
+<a href="/index/?page={{ paginate.prev_num }}">previos page</a>
+{% endif %}
+
+{% if paginate.has_next %}
+<a href="/index/?page={{ paginate.next_num }}">next page</a>
+{% endif %}
+
 {% endblock %}

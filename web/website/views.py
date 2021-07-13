@@ -5,28 +5,35 @@ from werkzeug.utils import secure_filename
 import json
 from .models import Note
 from . import db
+from flask_paginate import Pagination
+
 # pylint: disable=no-member
 
 views=Blueprint('views',__name__)
 UPLOAD_FOLDER = os.path.join('.','website','static')
 
 
-ALLOWED_EXTENSIONS = {'png','bmp','tiff'}
+ALLOWED_EXTENSIONS = {'png','bmp','tiff','jpeg','jpg'}
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@views.route('/index')
+@views.route('/index/')
 @views.route('/',methods=['Get','POST'])
 # @login_required # 必须要登陆才能进入此页面
 def home():
     # 匿名用户登陆
+    ROWS_PER_PAGE = 5
+    page = int(request.args.get('page', 1)) 
+    per_page = int(request.args.get('per_page', 5))
+
     if current_user.is_anonymous== True:
         # print("###DEBUG###")
         # print(Note.query.all())
         # 按时间逆序
-        return render_template('index.html',notes=Note.query.order_by(Note.date.desc()).all())
+        paginate=Note.query.order_by(Note.date.desc()).paginate(page,per_page,error_out=False)
+        return render_template('index.html',paginate=paginate,notes=paginate.items)
     # 上传图片
     if request.method== 'POST':
         if 'file' not in request.files:
@@ -46,6 +53,8 @@ def home():
             db.session.commit()
             note.save(os.path.join(UPLOAD_FOLDER,name))
             flash('Note added!',category='True')
+        else :
+            flash('UPLOAD_Failed',category='error')
     return render_template("home.html",user=current_user)
 
 @views.route('/delete-note',methods=['POST'])
