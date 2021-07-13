@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">Login to share your notes with others!</h1>
+<ul class="1list-group list-group-flush" id="notes">
+    {% for note in notes %}
+    <li class="list-group-item">
+        <div>Date:{{note.date}}</div>
+        <div>Liked:{{note.liked}}</div>
+        <div><img  src="{{url_for('static',filename=note.data)}}" alt="User Image" >
+        <button type="button"  onclick="likeNote({{ note.id }})">
+            <span aria-hidden="true">+1 like</span>
+        </button>
+        </div>
+    </li>  
+    {% endfor %}
+</ul>
+{% endblock %}
