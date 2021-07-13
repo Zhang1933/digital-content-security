@@ -7,3 +7,12 @@ function deleteNote(noteId){
         window.location.href="/";
     })
 }
+function likeNote(noteId){
+    // like note
+    fetch('/like-note',{
+        method:'POST',
+        body:JSON.stringify({noteId:noteId})
+    }).then((_res)=>{
+        location.reload()
+    })
+}

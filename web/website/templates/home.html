@@ -11,7 +11,8 @@
 <ul class="1list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">
-        {{note.date}}
+        <div>{{note.date}}</div>
+        <div>liked:{{note.liked}}</div>
         <img src="{{url_for('static',filename=note.data)}}" alt="User Image" >
         <button type="button"  onclick="deleteNote({{ note.id }})">
             <span aria-hidden="true">Delete note</span>

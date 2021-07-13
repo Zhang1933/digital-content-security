@@ -57,4 +57,15 @@ def delete_note():
         if note.user_id==current_user.id:
             db.session.delete(note)
             db.session.commit()
+            os.remove(os.path.join(UPLOAD_FOLDER,note.data))
+    return jsonify({})
+
+@views.route('/like-note',methods=['POST'])
+def like_note():
+    note=json.loads(request.data)
+    noteId=note['noteId']
+    note=Note.query.get(noteId)
+    if note:
+        note.liked+=1
+        db.session.commit()
     return jsonify({})
