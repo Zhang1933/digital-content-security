@@ -4,8 +4,11 @@ url = "https://mirrors.aliyun.com/pypi/simple"
 verify_ssl = true
 
 [packages]
-flask = "*"
-pysocks = "*"
+Flask = "*"
+PySocks = "*"
+Flask-Login = "*"
+pylint = "*"
+Flask-SQLAlchemy = "*"
 
 [dev-packages]
 
