@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 align="center">Your Notes</h1>
+<h1 align="center">{{ user.first_name }}'s notes</h1>
 <form method="POST" enctype=multipart/form-data>
     <input  type="file" name="file" id="note" class="form-control">
     <br/>
@@ -14,7 +14,7 @@
         <div>{{note.date}}</div>
         <div>liked:{{note.liked}}</div>
         <img src="{{url_for('static',filename=note.data)}}" alt="User Image" >
-        <button type="button"  onclick="deleteNote({{ note.id }})">
+        <button type="button" class="close" onclick="deleteNote({{ note.id }})">
             <span aria-hidden="true">Delete note</span>
         </button>
     </li>  

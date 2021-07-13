@@ -8,7 +8,7 @@
         <div>Date:{{note.date}}</div>
         <div>Liked:{{note.liked}}</div>
         <div><img  src="{{url_for('static',filename=note.data)}}" alt="User Image" >
-        <button type="button"  onclick="likeNote({{ note.id }})">
+        <button type="button" class="close" onclick="likeNote({{ note.id }})">
             <span aria-hidden="true">+1 like</span>
         </button>
         </div>
