@@ -19,3 +19,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+    n=db.Column(db.String(1000)) # 用户公钥
+    e=db.Column(db.String(1000))
+    d=db.Column(db.String(1000)) # 用户私钥
+    p=db.Column(db.String(1000))
+    q=db.Column(db.String(1000))

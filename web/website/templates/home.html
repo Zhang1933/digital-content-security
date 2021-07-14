@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 align="center">{{ user.first_name }}'s notes</h1>
+<div>
+    <h3>Your public key for client upload: </h3>
+    <p style="word-wrap: break-word;">
+        n:{{user.n}}
+    </p>
+    <p>
+        e:{{user.e}}
+    </p>
+</div>
 <form method="POST" enctype=multipart/form-data>
     <input  type="file" name="file" id="note" class="form-control">
     <br/>

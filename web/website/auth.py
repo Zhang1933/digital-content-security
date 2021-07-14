@@ -3,7 +3,7 @@ from .models import User
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-
+import rsa
 auth=Blueprint('auth',__name__)
 
 @auth.route('/sign-up',methods=['Get','POST'])
@@ -28,7 +28,8 @@ def sign_up():
             flash('Passwords must be at least 7 characters.',category='error')
         else :
             # 检查完毕 创建账户
-            new_user=User(email=email,first_name=first_name,password=generate_password_hash(password1,'sha256'))
+            (pub, priv) = rsa.newkeys(512)
+            new_user=User(email=email,first_name=first_name,password=generate_password_hash(password1,'sha256'),n=str(pub.n),e=str(pub.e),d=str(priv.d),p=str(priv.p),q=str(priv.q))
             db.session.add(new_user)
             db.session.commit()
             flash('Account created!',category='success')
@@ -62,3 +63,5 @@ def login():
         else :
             flash('Email does not exist.',category='error')
     return render_template("login.html",user=current_user)
+
+

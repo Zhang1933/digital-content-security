@@ -10,6 +10,10 @@ Flask-Login = "*"
 pylint = "*"
 Flask-SQLAlchemy = "*"
 flask-paginate = "*"
+pycryptodome = "*"
+rsa = "*"
+numpy = "*"
+pillow = "*"
 
 [dev-packages]
 
