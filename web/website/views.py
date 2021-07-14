@@ -48,7 +48,7 @@ def home():
             # print ("###"+os.getcwd())
             cnt=db.session.query(Note).count()
             name=str(cnt)+secure_filename(note.filename)
-            new_note=Note(data=name,user_id=current_user.id)
+            new_note=Note(data=name,user_id=current_user.id,user_name=current_user.first_name)
             db.session.add(new_note)
             db.session.commit()
             note.save(os.path.join(UPLOAD_FOLDER,name))

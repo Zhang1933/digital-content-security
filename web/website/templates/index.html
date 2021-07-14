@@ -5,8 +5,10 @@
 <ul class="1list-group list-group-flush" id="notes">
     {% for note in notes %}
     <li class="list-group-item">
+        <div>Uploader:{{note.user_name}}</div>
         <div>Date:{{note.date}}</div>
         <div>Liked:{{note.liked}}</div>
+        
         <div><img  src="{{url_for('static',filename=note.data)}}" alt="User Image" >
         <button type="button" class="close" onclick="likeNote({{ note.id }})">
             <span aria-hidden="true">+1 like</span>
@@ -16,11 +18,14 @@
     {% endfor %}
 </ul>
 {% if paginate.has_prev %}
+<div>
 <a href="/index/?page={{ paginate.prev_num }}">previos page</a>
+</div>
 {% endif %}
-
 {% if paginate.has_next %}
+<div>
 <a href="/index/?page={{ paginate.next_num }}">next page</a>
+</div>
 {% endif %}
 
 {% endblock %}
