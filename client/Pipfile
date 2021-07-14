@@ -5,8 +5,9 @@ name = "pypi"
 
 [packages]
 rsa = "*"
-pylint = "*"
 requests = "*"
+pylint = "*"
+pillow = "*"
 
 [dev-packages]
 

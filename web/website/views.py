@@ -13,7 +13,6 @@ import requests
 import base64
 import rsa
 from PIL import Image
-
 # pylint: disable=no-member
 
 views=Blueprint('views',__name__)
@@ -100,12 +99,11 @@ def upload_note():
 
     tmp=base64.b64decode(encryppass.encode('utf-8'))
     password=rsa.decrypt(tmp,priv_key).decode('utf-8')
-    
     if not check_password_hash(user.password,password):
         abort(400)
     im_b64=request.json['image']
     img_bytes=base64.b64decode(im_b64.encode('utf-8'))
-    try : 
+    try :
         img=Image.open(io.BytesIO(img_bytes))
     except IOError:
         abort(400)
@@ -114,6 +112,6 @@ def upload_note():
 
     new_note=Note(data=name,user_id=user.id,user_name=user.first_name)
     img.save(os.path.join(UPLOAD_FOLDER,name))
-    # print(img.Image.fromat)
-
+    db.session.add(new_note)
+    db.session.commit()
     return {'status':'200'}
