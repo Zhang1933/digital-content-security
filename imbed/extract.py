@@ -71,4 +71,9 @@ def extract(imgpath):
     #print(chr(int(wt[i:i+16])))
     #print(wt[i:i+16])
         content+=temp
-    print("提取内容",content)
+    #print("提取内容",content)
+    print("提取成功！")
+    restore = open('content1.txt',mode = 'a',encoding = 'UTF-8')
+    restore.write(content)
+    restore.close()
+extract('ushimaru_LSB.png')
