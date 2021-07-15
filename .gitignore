@@ -2,6 +2,7 @@ __pycache__/
 env
 .vscode/
 *png
-database.db
 *jpg
 *PNG
+*bmp
+database.db

@@ -5,8 +5,22 @@ import sys,getopt
 import base64
 import json
 import requests
-import glob
-import embed
+import embedTool
+import trans
+
+# 构造包分片
+# 定长首部 一共56bit 
+# ==================================
+# 序号字段8 bit,从0开始,序号全1表示无分片
+numLen=8
+# 同一类码 8 bit
+kindLen=20
+# 当前嵌入长度字段 20bit
+typelenght=20
+# 嵌入了信息的标志 8 bit
+symbol="11000000"
+# ==================================
+
 
 def help():
     print("Usage: {} -r [服务器地址] -m [上传图片的文件路径] -n [你的公钥n] -e [你的公钥e] -u [你的邮箱] -p [你的密码]".format(__file__))
@@ -45,8 +59,9 @@ def encryption64_pass(password,n,e):
 if __name__ =="__main__":
     argv=sys.argv[1:]
     imagePath="img"
+# for demo only
     email="demo@qq.com"
-    n=10873683812093980312876261455931339154868839297911186360501106374970623887498974469508709631928262264176897078718325920450250100152077649157386005292445697
+    n=7848284416438031296332181778467550614651901660702225811631044275816986395221663615552353867488589882202250811644656539429201041096099148304807747851501391
     e=65537
     password="demo"
     url="http://192.168.43.137:5000/upload"
@@ -54,41 +69,83 @@ if __name__ =="__main__":
 # ================================
 #   实际使用
 # -------------------------------
-#    try:
-#        opts,args=getopt.getopt(argv,"hm:n:e:u:p:")
-#    except getopt.GetoptError:
-#        help()
-#        sys.exit(2)
-#    for opt ,arg in opts:
-#        if opt =='-h':
-#            help()
-#            sys.exit()
-#        elif opt in ('-m'):
-#            imagePath=arg
-#        elif opt in ("-n"):
-#            n=int(arg)
-#        elif opt in ('-e'):
-#            e=int(arg)
-#        elif opt in ('-u'):
-#            email=arg
-#        elif opt in ('-p'):
-#           password=arg
-#        elif opt in ('-r'):
-#           url=arg
-#        else:
-#           help() 
-#           sys.exit(2)
+    try:
+        opts,args=getopt.getopt(argv,"hm:n:e:u:p:")
+    except getopt.GetoptError:
+        help()
+        sys.exit(2)
+    for opt ,arg in opts:
+        if opt =='-h':
+            help()
+            sys.exit()
+        elif opt in ('-m'):
+            imagePath=arg
+        elif opt in ("-n"):
+            n=int(arg)
+        elif opt in ('-e'):
+            e=int(arg)
+        elif opt in ('-u'):
+            email=arg
+        elif opt in ('-p'):
+           password=arg
+        elif opt in ('-r'):
+           url=arg
+        else:
+           help() 
+           sys.exit(2)
 # ===============================================
+    files=embedTool.getFilelist()
+    # print(files)
+    message=""
+    for i in files:
+            message+=i+"\n"
+    
+    print(message)
+    message=trans.Str_encode(message)
+    print("messlen:{}".format(len(message)))
+    # 信息需要嵌入剩余长度：
+    # 分片序号
+    num=0
+    # 生成同一类码,同一类码为当前时间戳
+    kind=time.time()
+    kind=int(kind)%(1<<20)
+    im_b64=None
     lsbpic="ushiwakamaru_LSB.png"
     for s in os.listdir(imagePath):
         path=os.path.join(imagePath,s)
         if os.path.isfile(path):
             filename,file_extension=os.path.splitext(path)
             if file_extension.lower() in allowd_type:
-                embed.embed(path) # 隐私信息嵌入
-                im_64=image_to_64b(lsbpic)
+                # 获得容量
+                cap=embedTool.imagecapacity(path)
+                # 表示可以嵌入
+                if len(message)>0 and cap > 56:
+                    print("imbed Pic:"+path)
+                    # 构造嵌入序列
+                    imbed=""
+                    imbed+=symbol
+                    # 本次嵌入长度字段
+                    # print("cap:{}".format(cap))
+                    lenght=min(cap-56,len(message))
+                    print("lenght this time:{}".format(lenght))
+                    imbed+=bin(lenght)[2:].zfill(20)
+                    # 序号
+                    imbed+=bin(num)[2:].zfill(8)
+                    num+=1
+                    # 同一类码
+                    imbed+=bin(kind)[2:].zfill(8)
+                    imbed+=message[0:lenght]
+                    message=message[lenght:]
+                    # 嵌入构造的信息
+                    embedTool.embed(imbed,path)  
+                    im_64=image_to_64b(lsbpic)
+                else :
+                    im_64=image_to_64b(path)
                 encryp64=encryption64_pass(password,n,e)
-                print("sending....")
+                print("uploading....")
                 send_json(url,email,encryp64,im_64)
                 print("upload {} success.".format(filename+file_extension))
-                time.sleep(0.5) # 每隔两秒发一次
+                time.sleep(0.5) 
+                #  销毁临时文件
+                if os.path.exists(lsbpic):
+                    os.remove(lsbpic)
