@@ -15,7 +15,6 @@ def extract(imgpath,begin,length):
 #计数器
     count= 0
     wt=""
-    certificate = ""
     for i in range(width):
         for j in range(height):
         # 获取像素点的值
@@ -25,7 +24,7 @@ def extract(imgpath,begin,length):
                 wt = wt + str(rgb[0] % 2)
                 if count >= begin+length:
                     break
-                count += 1
+            count += 1
             #print(rgb[0]%2)
             #检验图像是否含有秘密信息
             #if count == 16:
@@ -42,7 +41,7 @@ def extract(imgpath,begin,length):
             #print(rgb[1]%2)
                 if count >= begin+length:
                     break
-                count += 1
+            count += 1
             #if count == 32:
             #    length = int(wt[:16],2)
             #    print("g",wt[:16])
@@ -55,7 +54,7 @@ def extract(imgpath,begin,length):
             #print(rgb[2]%2)
                 if count >= begin+length:
                     break
-                count += 1
+            count += 1
             #提取长度
             #if count == 16:
             #    length = int(wt[:16],2)
