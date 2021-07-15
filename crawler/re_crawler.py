@@ -5,10 +5,10 @@ def crawler(url = 'http://192.168.43.137:5000/',store_path = 'images\\'):
     from urllib.request import HTTPDigestAuthHandler
     import requests
     import time
+    
     #初始化访问页
     first_page = 1
 
-    #判断是否翻页
     PageNext = 1
     store = []
     while PageNext == 1:
@@ -17,9 +17,11 @@ def crawler(url = 'http://192.168.43.137:5000/',store_path = 'images\\'):
         str_of_Page = str(first_page)
         url_im = url + 'index/?page=' + str_of_Page
         html = requests.get(url = url_im).text
+        #正则表达式筛选图片
         img_url = re.findall('src="(.*?)" class=',html,re.S)
         store += img_url
-    
+        
+        #是否需要翻页
         if('next page' in html):
             PageNext = 1
             first_page += 1
@@ -40,7 +42,7 @@ def crawler(url = 'http://192.168.43.137:5000/',store_path = 'images\\'):
             print('error: can not download this image')
             continue
         #保存图片
-        string = store_path + str(i) + '.png'
+        string = store_path + str(i) + '_' +each[-5:]
         fp = open(string,'wb')
         fp.write(img.content)
         fp.close()
