@@ -15,16 +15,19 @@ def extract(imgpath,begin,length):
 #计数器
     count= 0
     wt=""
+    flag = 0
     for i in range(width):
         for j in range(height):
         # 获取像素点的值
             rgb = im.getpixel((i, j))
         # 提取R通道的附加值
             if count % 3 == 0 and count>=begin:
-                wt = wt + str(rgb[0] % 2)
                 if count >= begin+length:
+                    flag = 1
                     break
+                wt = wt + str(rgb[0] % 2)
             count += 1
+            #print(count,begin)
             #print(rgb[0]%2)
             #检验图像是否含有秘密信息
             #if count == 16:
@@ -37,11 +40,14 @@ def extract(imgpath,begin,length):
 #                wt = ""
     # 提取G通道的附加值
             if count % 3 == 1 and count>=begin:
+                if count >= begin+length:
+                    flag = 1
+                    break
                 wt = wt + str(rgb[1] % 2)
             #print(rgb[1]%2)
-                if count >= begin+length:
-                    break
+                
             count += 1
+            #print(count,begin)
             #if count == 32:
             #    length = int(wt[:16],2)
             #    print("g",wt[:16])
@@ -50,22 +56,26 @@ def extract(imgpath,begin,length):
 
     # 提取B通道的附加值
             if count % 3 == 2 and count>=begin:
+                if count >= begin+length:
+                    flag = 1
+                    break
                 wt = wt + str(rgb[2] % 2)
             #print(rgb[2]%2)
-                if count >= begin+length:
-                    break
             count += 1
+            #print(count,begin)
             #提取长度
             #if count == 16:
             #    length = int(wt[:16],2)
             #    print("b",wt[:16])
             #    print("提取长度",length)
             #    wt = ""
+        if flag == 1:
+            break
 
 #    print(count,' ',length,' ',len(wt),begin)
     print("提取成功！")
     return wt
-#begin = 0
-#length = 65392
+#begin = 28
+#length = 8
 #wt = extract('ushiwakamaru_LSB.png',begin,length)
 #print(wt)
