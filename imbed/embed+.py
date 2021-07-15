@@ -15,16 +15,18 @@ def getFilelist(flst=os.path.expanduser('~')):
     i = 0
     temp = ''
     try:
-        for root, dirs, files in os.walk(flst, topdown=False):
+        flist = os.listdir(flst)
+        for dirs in flist:
             for name in dirs:
                 for j in range(len(name)):
                     if ord(name[j])>32 and ord(name[j])<127:
                         temp += name[j]
                 #print(os.path.join(root, name))
                 #print(name[0])
+            if temp != '':
                 filelist.append(temp)
-                temp = ''
-                i += 1
+            temp = ''
+            i += 1
     except (PermissionError):
         print("skip this file")
     return filelist
@@ -92,5 +94,5 @@ def imagecapacity(imgpath):
 #imagecapacity('ushiwakamaru.jpg')
 #embed('ushiwakamaru.jpg')
 #flst = os.path.expanduser('~')
-#filelist = getFilelist(flst)
+#filelist = getFilelist()
 #print(filelist)
