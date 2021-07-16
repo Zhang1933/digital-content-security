@@ -87,4 +87,4 @@ def embed(imgpath):
             if count % 3 == 0:
 	            img.putpixel((x, y), (r, g, b))
     img.save('ushiwakamaru_LSB.png')
-#embed('ushiwakamaru.jpg')
+embed('D:\\360downloads\\2001928.jpg')
