@@ -39,16 +39,17 @@ def generate_message(kindmap):
        
     for k in kindmap:
         kindmap[k]=sorted(kindmap[k],key=cmp_to_key(func))
-    
+    print(kindmap)
     message=""
     for k in kindmap:
         tmp=""
         for img in kindmap[k]:
             length=extracttool.extract(img,8,20)    
-            # print(int(extracttool.extract(img,28,8),2))  
+            print(int(extracttool.extract(img,28,8),2))  
             length=int(length,2)
             tmp+=extracttool.extract(img,56,length)
         tmp=tmp[0:len(tmp)//8*8]
+        print("一组信息的长度：{}".format(len(tmp)))
         message+=trans.Str_decode(tmp)+"\nkind:{}\n\n".format(k)
 
     with open('data.txt','a') as f:
@@ -56,6 +57,8 @@ def generate_message(kindmap):
     print("Finish")
 if __name__=="__main__":
     url="http://192.168.43.137:5000/"
+    print("crawler url:")
+    # url=input()
     store_path="img/"
     # 同类map,同一类码:图片路径, 列表
     kindmap={}

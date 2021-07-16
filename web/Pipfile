@@ -13,8 +13,8 @@ flask-paginate = "*"
 pycryptodome = "*"
 rsa = "*"
 numpy = "*"
-pillow = "*"
 requests = "*"
+pillow = "*"
 
 [dev-packages]
 

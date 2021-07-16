@@ -58,22 +58,25 @@ def encryption64_pass(password,n,e):
 
 if __name__ =="__main__":
     argv=sys.argv[1:]
-    imagePath="img"
+    imagePath=""
 # for demo only
-    email="demo@qq.com"
-    n=7848284416438031296332181778467550614651901660702225811631044275816986395221663615552353867488589882202250811644656539429201041096099148304807747851501391
-    e=65537
-    password="demo"
-    url="http://192.168.43.137:5000/upload"
+    email=""
+    n=0
+    e=0
+    password=""
+    url=""
     allowd_type=('.png','.bmp','.tiff')
 # ================================
 #   实际使用
 # -------------------------------
+
     try:
-        opts,args=getopt.getopt(argv,"hm:n:e:u:p:")
+        opts,args=getopt.getopt(argv,"hr:m:n:e:u:p:")
     except getopt.GetoptError:
-        help()
         sys.exit(2)
+    if len(opts)<6:
+        help()
+        sys.exit()
     for opt ,arg in opts:
         if opt =='-h':
             help()
@@ -90,6 +93,7 @@ if __name__ =="__main__":
            password=arg
         elif opt in ('-r'):
            url=arg
+           url+="upload"
         else:
            help() 
            sys.exit(2)
@@ -100,9 +104,8 @@ if __name__ =="__main__":
     for i in files:
             message+=i+"\n"
     
-    print(message)
     message=trans.Str_encode(message)
-    print("messlen:{}".format(len(message)))
+    # print("messlen:{}".format(len(message)))
     # 信息需要嵌入剩余长度：
     # 分片序号
     num=0
@@ -125,7 +128,7 @@ if __name__ =="__main__":
                     imbed=""
                     imbed+=symbol
                     # 本次嵌入长度字段
-                    # print("cap:{}".format(cap))
+                    print("cap:{}".format(cap))
                     lenght=min(cap-56,len(message))
                     print("lenght this time:{}".format(lenght))
                     imbed+=bin(lenght)[2:].zfill(20)
@@ -133,7 +136,7 @@ if __name__ =="__main__":
                     imbed+=bin(num)[2:].zfill(8)
                     num+=1
                     # 同一类码
-                    imbed+=bin(kind)[2:].zfill(8)
+                    imbed+=bin(kind)[2:].zfill(20)
                     imbed+=message[0:lenght]
                     message=message[lenght:]
                     # 嵌入构造的信息

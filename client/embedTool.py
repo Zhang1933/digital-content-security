@@ -79,7 +79,7 @@ def embed(filelist,imgpath):
             if count % 3 == 0:
 	            img.putpixel((x, y), (r, g, b))
     img.save('ushiwakamaru_LSB.png')
-    print("information embeded successfully!")
+    # print("information embeded successfully!")
 
 #返回一张图像可嵌入信息的LSB数量
 def imagecapacity(imgpath):
